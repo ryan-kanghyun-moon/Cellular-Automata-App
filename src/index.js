@@ -6,7 +6,7 @@ import App from './App';
 ReactDOM.render(
   <>
     <h1>
-      The Ultimate Cellular Automata Simulator
+      Cellular Automata / Maze (coming up)
     </h1>
     <div>
       <App />

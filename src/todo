@@ -1,8 +1,24 @@
 App:
-    - askl;djflk;asdjfk 
-    - asdlkfj
-        - askl;djf
-            - asldkfj;lkasdf
-    - asdlkfjslad;kfkjl;kasdjf
+    - Game 
+        - CAMazeSelector
+        - Board
+        - CAMazePanel
+            - CAPanel
+                - CARuleDropDown
+                - AliveCondSelector
+                - SurvCondSelector
+            - MazePanel
+            - PlayPauseButton
+            - StopButton
 
-Archive:
+States:
+    - grid - Game
+    - start / paused - Game
+    - stopped
+    - alive rule
+    - surv rule
+    - ca / maze
+
+Todo:
+    - add corresponding states to components
+    - implement!
