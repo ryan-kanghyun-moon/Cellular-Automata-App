@@ -8,13 +8,12 @@ App:
                 - AliveCondSelector
                 - SurvCondSelector
             - MazePanel
-            - PlayPauseButton
+            - PlayPauseButton 
             - StopButton
-
 States:
     - grid - Game
-    - start / paused - Game
-    - stopped
+    - start / pause - Game
+    - stopped 
     - alive rule
     - surv rule
     - ca / maze
