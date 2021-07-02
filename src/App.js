@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom'
-const numRows = 120;
-const numCols = 120;
+const numRows = 110;
+const numCols = 110;
 const pxSize = 8;
 
 const rules = {
@@ -28,10 +28,19 @@ function CAMazeSelector(props) {
   )
 }
 
-function CAMazePanel(props) {
+function CAPanel(props) {
   // TODO
   return (
-    <div>panel</div>
+    <div>CA panel</div>
+  )
+}
+
+function MazePanel(props) {
+  //TODO
+  return (
+    <div>
+      Maze panel
+    </div>
   )
 }
 
@@ -70,15 +79,26 @@ function Board(props) {
 
 function Game() {
   var [grid, setGrid] = useState(() => Array(numRows).fill().map(() => new Array(numCols).fill(0)));
-  var [rule, setRule] = useState('maze');
+  var [surv, setSurv] = useState(rules.maze.surv);
+  var [live, setLive] = useState(rules.maze.live);
+  var [currRule, setCurrRule] = useState('maze');
   var [isCA, setIsCA] = useState(true);
   var [isOn, setIsOn] = useState(false);
-
+  var [randLevel, setRandLevel] = useState(0.05);
+  
+  
+  
   return (
     <div>
       <CAMazeSelector isCA={isCA} setIsCA={setIsCA}/>
-      <Board grid={grid} setGrid={setGrid} rule={rule} isOn={isOn}/>
-      <CAMazePanel rule={rule} setRule={setRule}/>
+      <Board grid={grid} setGrid={setGrid} rule={currRule} isOn={isOn}/>
+      
+      <div>
+        {isCA ?  
+          <CAPanel rule={currRule} setRule={setCurrRule} surv={surv} live={live}/>
+          :
+          <MazePanel/>}
+      </div>
       
       <button classID="playPauseButton" onClick={() => {setIsOn(!isOn)}}>
         {!isOn ? "play" : "pause"}
@@ -89,8 +109,27 @@ function Game() {
         setIsOn(false);}}>
         {"reset"}
       </button>
+
+      <form>
+        <label>
+          random level (0 - 1):
+          <input type="text" value={randLevel} onChange={
+            (event) => 
+              {let value = event.target.value;
+                Number(value) == value && value >= 0 && value <= 1 ? 
+                setRandLevel(event.target.value) : setRandLevel(randLevel)}
+          }/>
+        </label>
+      </form>
+      <button onClick={() => {
+        var newArr = new Array(numRows).fill().map(
+          () => new Array(numCols).fill().map(
+            () => Math.random() < randLevel ? 1 : 0));
+        setGrid(newArr);
+      }}>randomize!</button>
+
     </div>
-  )
+  ) 
 }
 
 function App() {
