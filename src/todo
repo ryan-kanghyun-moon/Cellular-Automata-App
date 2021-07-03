@@ -17,6 +17,7 @@ States:
     - alive rule
     - surv rule
     - ca / maze
+    - randLevel
 
 Todo:
     - add corresponding states to components
