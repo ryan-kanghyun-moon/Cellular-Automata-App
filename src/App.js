@@ -119,6 +119,9 @@ function CAPanel(props) {
         <h3>living neighbors,</h3>
         <h3>or be dead otherwise.</h3>
         
+        <Spacer/>
+
+        <button onClick={() => {props.setOneIsColor(!props.oneIsColor)}}>flip color scheme!</button>
       </div>
     </div>
   )
@@ -148,7 +151,7 @@ function Board(props) {
               style={{
                 width: pxSize,
                 height: pxSize,
-                backgroundColor: arr[i][k] ? "green" : "white",
+                backgroundColor: (arr[i][k] && props.oneIsColor) || (!arr[i][k] && !props.oneIsColor) ? "green" : "white",
                 border: "solid 1px black"
               }}
               onClick={() => {
@@ -178,13 +181,14 @@ function Game() {
   var [isCA, setIsCA] = useState(true);
   var [isOn, setIsOn] = useState(false);
   var [randLevel, setRandLevel] = useState(0.05);
+  var [oneIsColor, setOneIsColor] = useState(true);
   
   
   
   return (
     <div>
       <div style={{display:"flex"}}>
-        <Board grid={grid} setGrid={setGrid} rule={currRule} isOn={isOn}/>
+        <Board grid={grid} setGrid={setGrid} rule={currRule} isOn={isOn} oneIsColor={oneIsColor}/>
        
         <Spacer/>
 
@@ -195,7 +199,7 @@ function Game() {
           
           <div>
             {isCA ?  
-              <CAPanel currRule={currRule} setCurrRule={setCurrRule} surv={surv} setSurv={setSurv} live={live} setLive={setLive}/>
+              <CAPanel currRule={currRule} setCurrRule={setCurrRule} surv={surv} setSurv={setSurv} live={live} setLive={setLive} oneIsColor={oneIsColor} setOneIsColor={setOneIsColor}/>
               :
               <MazePanel/>}
           </div>
@@ -235,6 +239,7 @@ function Game() {
                 () => Math.random() < randLevel ? 1 : 0));
             setGrid(newArr);
           }}>randomize!</button>
+
       </div>
     </div>
   ) 
