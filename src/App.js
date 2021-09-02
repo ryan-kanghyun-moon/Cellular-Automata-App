@@ -142,7 +142,7 @@ function Board(props) {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${numCols}, ${pxSize + 2}px)`
+        gridTemplateColumns: `repeat(${numCols}, ${pxSize + 4}px)`
       }}>
       {arr.map((row, i) => (
           row.map((col, k) => (
