@@ -1,5 +1,5 @@
-App:
-    - Game 
+App: 
+    - Game
         - CAMazeSelector
         - Board
         - CAMazePanel
@@ -22,3 +22,6 @@ States:
 Todo:
     - add corresponding states to components
     - implement!
+
+CA:
+    - 

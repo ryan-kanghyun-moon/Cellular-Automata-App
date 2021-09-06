@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ReactDOM from 'react-dom'
+import * as ca from "./CA.js";
 const numRows = 100;
 const numCols = 100;
 const pxSize = 8;
 const buttonSize = 20;
+
 
 const rules = {
   maze : {
@@ -183,6 +185,7 @@ function Game() {
   var [randLevel, setRandLevel] = useState(0.05);
   var [oneIsColor, setOneIsColor] = useState(true);
   
+  const isOnRef = useRef(isOn);
   
   
   return (
@@ -206,7 +209,15 @@ function Game() {
 
           <Spacer/>
 
-          <button classID="playPauseButton" onClick={() => {setIsOn(!isOn)}}>
+          <button classID="playPauseButton" onClick={() => {
+            console.log(isOn);
+            setIsOn(!isOn);
+            console.log(isOn);
+            isOnRef.current = !isOn;
+            if (isOn){
+              var CA = new ca.CA(grid, setGrid, isOnRef, live, surv);
+              CA.show();
+            }}}>
             {!isOn ? "play" : "pause"}
           </button>
           
