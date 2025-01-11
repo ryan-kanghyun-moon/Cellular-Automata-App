@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom'
 import * as ca from "./CA.js";
 const numRows = 100;
@@ -186,7 +186,18 @@ function Game() {
   var [oneIsColor, setOneIsColor] = useState(true);
   
   const isOnRef = useRef(isOn);
-  
+  useEffect(() => {
+      var co = new ca.CA(grid, live, surv);
+      function gameUpdate(c) {
+            if (isOnRef.current) {
+              var arr = c.next();
+              // console.log(arr);
+              setGrid(arr);
+              setTimeout(() => gameUpdate(c), 100);
+            } 
+      }
+      gameUpdate(co);
+  }, [isOn]);
   
   return (
     <div>
@@ -210,14 +221,9 @@ function Game() {
           <Spacer/>
 
           <button classID="playPauseButton" onClick={() => {
-            console.log(isOn);
             setIsOn(!isOn);
-            console.log(isOn);
             isOnRef.current = !isOn;
-            if (isOn){
-              var CA = new ca.CA(grid, setGrid, isOnRef, live, surv);
-              CA.show();
-            }}}>
+            }}>
             {!isOn ? "play" : "pause"}
           </button>
           
