@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactDOM from 'react-dom'
+// import ReactDOM from 'react-dom'
 import * as ca from "./CA.js";
 const numRows = 100;
 const numCols = 100;
@@ -187,16 +187,19 @@ function Game() {
   
   const isOnRef = useRef(isOn);
   useEffect(() => {
-      var co = new ca.CA(grid, live, surv);
-      function gameUpdate(c) {
+      console.log("starting effect");
+      var c = new ca.CA(grid, live, surv);
+      // var i = 1;
+      function gameUpdate() {
             if (isOnRef.current) {
               var arr = c.next();
-              // console.log(arr);
-              setGrid(arr);
-              setTimeout(() => gameUpdate(c), 100);
+              var a = [...arr];
+              // console.log([... a]);
+              setGrid(a);
+              setTimeout(() => gameUpdate(), 100);
             } 
       }
-      gameUpdate(co);
+      gameUpdate();
   }, [isOn]);
   
   return (
