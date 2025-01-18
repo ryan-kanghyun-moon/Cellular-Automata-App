@@ -16,7 +16,7 @@ export class CA {
     surv;
 
     constructor(grid, live, surv) {
-        this.grid = [...grid];
+        this.grid = grid;
         this.live = live;
         this.surv = surv;
 
@@ -44,7 +44,7 @@ export class CA {
     }
 
     ca() {
-        var newGrid = [...this.grid];
+        var newGrid = this.grid.map((a) => a.slice());
         this.grid.forEach((row, i) => {
             row.forEach((col, k) => {
                 var nbCount = this.countNeighbor(i, k);

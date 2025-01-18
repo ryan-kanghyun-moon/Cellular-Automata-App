@@ -189,14 +189,10 @@ function Game() {
   useEffect(() => {
       console.log("starting effect");
       var c = new ca.CA(grid, live, surv);
-      // var i = 1;
       function gameUpdate() {
             if (isOnRef.current) {
-              var arr = c.next();
-              var a = [...arr];
-              // console.log([... a]);
-              setGrid(a);
-              setTimeout(() => gameUpdate(), 100);
+              setGrid(c.next());
+              setTimeout(() => gameUpdate(), 10);
             } 
       }
       gameUpdate();
