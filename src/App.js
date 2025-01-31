@@ -187,15 +187,8 @@ function Game() {
   
   const isOnRef = useRef(isOn);
   useEffect(() => {
-      console.log("starting effect");
-      var c = new ca.CA(grid, live, surv);
-      function gameUpdate() {
-            if (isOnRef.current) {
-              setGrid(c.next());
-              setTimeout(() => gameUpdate(), 10);
-            } 
-      }
-      gameUpdate();
+      var c = new ca.CA(grid, live, surv, setGrid, isOnRef);
+      c.show();
   }, [isOn]);
   
   return (

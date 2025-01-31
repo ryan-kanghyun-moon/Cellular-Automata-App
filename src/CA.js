@@ -14,18 +14,25 @@ export class CA {
     grid;
     live;
     surv;
+    setGrid;
+    isOnRef;
 
-    constructor(grid, live, surv) {
+    constructor(grid, live, surv, setGrid, isOnRef) {
         this.grid = grid;
         this.live = live;
         this.surv = surv;
+        this.setGrid = setGrid;
+        this.isOnRef = isOnRef;
 
         return this;
     }
 
-    next() {
-        this.ca();
-        return this.grid;
+    show() {
+        if (this.isOnRef.current) {
+            this.ca();
+            this.setGrid(this.grid);
+            setTimeout(() => this.show(), 10);
+        }
     }
 
     countNeighbor(i, k) {
