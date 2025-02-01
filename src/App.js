@@ -39,7 +39,7 @@ function CAMazeSelector(props) {
           backgroundColor: props.isCA ? "pink" : "white",
           border: "solid 1px black"
         }}
-        onClick={() => props.setIsCA(!props.isCA)}
+        onClick={() => props.setIsCA(true)}
       >Cellular Automata</div>
       <div 
         classID={"MazeOption"}
@@ -49,7 +49,7 @@ function CAMazeSelector(props) {
           backgroundColor: !props.isCA ? "pink" : "white",
           border: "solid 1px black"
         }}
-        onClick={() => props.setIsCA(!props.isCA)}
+        onClick={() => props.setIsCA(false)}
       >Maze</div>
     </div>
   )
@@ -175,6 +175,45 @@ function Spacer() {
   return <div style={{width: 20, height: 20}}/>
 }
 
+function Randomizer(props) {
+  return <div style={{display: "flex"}}>
+          <form>
+            <label>
+              random level (0 - 1): 
+              <input type="text" value={props.randLevel} onChange={
+                (event) => 
+                  {let value = event.target.value;
+                    if (Number(value) == value && value >= 0 && value <= 1) props.setRandLevel(event.target.value);
+              }}/>
+            </label>
+          </form>
+          <button onClick={() => {
+            var newArr = new Array(numRows).fill().map(
+              () => new Array(numCols).fill().map(
+                () => Math.random() < props.randLevel ? 1 : 0));
+            props.setGrid(newArr);
+          }}>randomize!</button>
+      </div>
+}
+
+function PlayPauseReset(props) {
+  return <div>
+          <button classID="playPauseButton" onClick={() => {
+            props.setIsOn(!props.isOn);
+            props.isOnRef.current = !props.isOn;
+            }}>
+            {!props.isOn ? "play" : "pause"}
+          </button>
+          
+          {!props.isOnRef.current&& <button classID="resetButton" onClick={() => {
+            // props.setIsOn(false);
+            props.setGrid(() => Array(numRows).fill().map(() => new Array(numCols).fill(0)));
+            }}>
+            {"reset"}
+          </button>}
+  </div>
+}
+
 function Game() {
   var [grid, setGrid] = useState(() => Array(numRows).fill().map(() => new Array(numCols).fill(0)));
   var [surv, setSurv] = useState(rules.maze.surv);
@@ -212,7 +251,8 @@ function Game() {
 
           <Spacer/>
 
-          <button classID="playPauseButton" onClick={() => {
+          <PlayPauseReset setIsOn={setIsOn} isOn={isOn} isOnRef={isOnRef} setGrid={setGrid} />
+          {/* <button classID="playPauseButton" onClick={() => {
             setIsOn(!isOn);
             isOnRef.current = !isOn;
             }}>
@@ -220,36 +260,19 @@ function Game() {
           </button>
           
           <button classID="resetButton" onClick={() => {
+            setIsOn(false);
             setGrid(() => Array(numRows).fill().map(() => new Array(numCols).fill(0)));
-            setIsOn(false);}}>
+            }}>
             {"reset"}
-          </button>
+          </button> */}
 
         </div>
       </div>
 
       <Spacer/>
 
-      <div style={{display: "flex"}}>
-          <form>
-            <label>
-              random level (0 - 1): 
-              <input type="text" value={randLevel} onChange={
-                (event) => 
-                  {let value = event.target.value;
-                    Number(value) == value && value >= 0 && value <= 1 ? 
-                    setRandLevel(event.target.value) : setRandLevel(randLevel)}
-              }/>
-            </label>
-          </form>
-          <button onClick={() => {
-            var newArr = new Array(numRows).fill().map(
-              () => new Array(numCols).fill().map(
-                () => Math.random() < randLevel ? 1 : 0));
-            setGrid(newArr);
-          }}>randomize!</button>
+      <Randomizer setGrid={setGrid} randLevel={randLevel} setRandLevel={setRandLevel} />
 
-      </div>
     </div>
   ) 
 }

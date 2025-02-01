@@ -25,3 +25,7 @@ Todo:
 
 CA:
     - 
+
+Architecture:
+    - Game <- Grid, Panel, Rand
+
