@@ -86,16 +86,9 @@ function CAPanel(props) {
         <h3>living neighbors,</h3>
         <h3>or be dead otherwise.</h3>
         
-        <Spacer/>
-
-        <button onClick={() => {props.setOneIsColor(!props.oneIsColor)}}>flip color scheme!</button>
       </div>
     </div>
   )
-}
-
-function Spacer() {
-  return <div style={{width: 20, height: 20}}/>
 }
 
 export default CAPanel;

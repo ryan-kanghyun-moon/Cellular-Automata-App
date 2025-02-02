@@ -1,3 +1,4 @@
+import * as ENUM from './enums.js';
 
 const neighbors = [
     [-1, -1],
@@ -56,7 +57,7 @@ export class CA {
             row.forEach((col, k) => {
                 var nbCount = this.countNeighbor(i, k);
                if ((this.grid[i][k] && !this.surv[nbCount]) || (!this.grid[i][k] && this.live[nbCount])) {
-                newGrid[i][k] = !newGrid[i][k];
+                newGrid[i][k] = newGrid[i][k] === ENUM.CA.ALIVE ? ENUM.CA.DEAD : ENUM.CA.ALIVE;
                }
             })
         })

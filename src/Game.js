@@ -6,6 +6,7 @@ import Board from './Board.js';
 import CAPanel from './CAPanel.js';
 import CAMazeSelector from './CAMazeSelector.js';
 import MazePanel from './MazePanel.js';
+import {CA, MAZE} from './enums.js';
 const numRows = 100;
 const numCols = 100;
 
@@ -18,10 +19,12 @@ function Game() {
   var [surv, setSurv] = useState([0, 0, 1, 1, 0, 0, 0, 0, 0]);
   var [live, setLive] = useState([0, 0, 0, 1, 0, 0, 0, 0, 0]);
   var [currRule, setCurrRule] = useState('game of life');
-  var [isCA, setIsCA] = useState(true);
+  var [isCA, setIsCA] = useState(false);
   var [isOn, setIsOn] = useState(false);
   var [randLevel, setRandLevel] = useState(0.05);
-  var [oneIsColor, setOneIsColor] = useState(true);
+  var [isSelectingStart, setIsSelectingStart] = useState(false);
+  var [isSelectingGoal, setIsSelectingGoal] = useState(false);
+  var [currMazeRule, setCurrMazeRule] = useState(MAZE.DFS);
   
   const isOnRef = useRef(isOn);
   useEffect(() => {
@@ -36,32 +39,31 @@ function Game() {
   return (
     <div>
       <div style={{display:"flex"}}>
-        <Board grid={grid} setGrid={setGrid} rule={currRule} isOn={isOn} oneIsColor={oneIsColor} numCols={numCols} numRows={numRows} isCA={isCA}/>
+        <Board grid={grid} setGrid={setGrid} rule={currRule} isOn={isOn} numCols={numCols} numRows={numRows} isCA={isCA} isSelectingGoal={isSelectingGoal} setIsSelectingGoal={setIsSelectingGoal} isSelectingStart={isSelectingStart} setIsSelectingStart={setIsSelectingStart}/>
        
         <Spacer/>
 
         <div>
-          <CAMazeSelector isCA={isCA} setIsCA={setIsCA}/>
+          <CAMazeSelector isCA={isCA} setIsCA={setIsCA} isOn={isOn}/>
 
           <Spacer/>
           
           <div>
             {isCA ?  
-              <CAPanel currRule={currRule} setCurrRule={setCurrRule} surv={surv} setSurv={setSurv} live={live} setLive={setLive} oneIsColor={oneIsColor} setOneIsColor={setOneIsColor}/>
+              <CAPanel currRule={currRule} setCurrRule={setCurrRule} surv={surv} setSurv={setSurv} live={live} setLive={setLive} />
               :
-              <MazePanel/>}
+              <MazePanel currMazeRule={currMazeRule} setCurrMazeRule={setCurrMazeRule} isSelectingGoal={isSelectingGoal} setIsSelectingGoal={setIsSelectingGoal} isSelectingStart={isSelectingStart} setIsSelectingStart={setIsSelectingStart} isOn={isOn}/>}
           </div>
 
           <Spacer/>
 
           <PlayPauseReset setIsOn={setIsOn} isOn={isOn} isOnRef={isOnRef} setGrid={setGrid} numRows={numRows} numCols={numCols} />
+			
+      	  <Spacer/>
+			
+          <Randomizer setGrid={setGrid} randLevel={randLevel} setRandLevel={setRandLevel} numRows={numRows} numCols={numCols} />
         </div>
       </div>
-
-      <Spacer/>
-
-      <Randomizer setGrid={setGrid} randLevel={randLevel} setRandLevel={setRandLevel} numRows={numRows} numCols={numCols} />
-
     </div>
   ) 
 }

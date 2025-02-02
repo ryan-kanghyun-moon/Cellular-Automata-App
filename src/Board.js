@@ -9,7 +9,7 @@ function getColor(isCA, oneIsColor, cellValue) {
       case (CA.DEAD) :
         return "white";
       default :
-        return "white";
+        return "black";
     }
   } else {
       switch(cellValue) {
@@ -28,11 +28,24 @@ function getColor(isCA, oneIsColor, cellValue) {
         case (MAZE.START) :
           return "darkgreen";
         default :
-          return "black";
+          return "orange";
       }
   }
 } 
 
+function setValue(isCA, setGrid, isSelectingGoal, setIsSelectingGoal, isSelectingStart, setIsSelectingStart, cellValue) {
+	if (isCA) {
+                  var newArr = [...arr];
+                  newArr[i][k] = arr[i][k] === CA.ALIVE ? CA.DEAD : CA.ALIVE;
+                  props.setGrid(newArr);
+	} else {
+	if (isSelectingGoal) {
+		var newArr = [...arr];
+		
+	}
+		
+	}
+}
 
 export default function Board(props) {
   const arr = props.grid;
@@ -55,7 +68,7 @@ export default function Board(props) {
               onClick={() => {
                 if (!props.isOn) {
                   var newArr = [...arr];
-                  newArr[i][k] = !arr[i][k];
+                  newArr[i][k] = arr[i][k] === CA.ALIVE ? CA.DEAD : CA.ALIVE;
                   props.setGrid(newArr);
                  
                 }
