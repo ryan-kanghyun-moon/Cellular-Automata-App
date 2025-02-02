@@ -1,4 +1,38 @@
+import {CA, MAZE} from './enums';
 const pxSize = 8;
+
+function getColor(isCA, oneIsColor, cellValue) {
+  if (isCA) {
+    switch(cellValue) {
+      case (CA.ALIVE) :
+        return "green";
+      case (CA.DEAD) :
+        return "white";
+      default :
+        return "white";
+    }
+  } else {
+      switch(cellValue) {
+        case (MAZE.EMPTY_PATH) :
+          return "white";
+        case (MAZE.WALL) :
+          return "black";
+        case (MAZE.GOAL) :
+          return "deeppink";
+        case (MAZE.PATH_FOUND) :
+          return "salmon";
+        case (MAZE.PATH_TO_BE_SEARCHED) :
+          return "lightseagreen";
+        case (MAZE.SEARCHED) :
+          return "paleturquoise";
+        case (MAZE.START) :
+          return "darkgreen";
+        default :
+          return "black";
+      }
+  }
+} 
+
 
 export default function Board(props) {
   const arr = props.grid;
@@ -15,7 +49,7 @@ export default function Board(props) {
               style={{
                 width: pxSize,
                 height: pxSize,
-                backgroundColor: (arr[i][k] && props.oneIsColor) || (!arr[i][k] && !props.oneIsColor) ? "green" : "white",
+                backgroundColor: getColor(props.isCA, props.oneIsColor, arr[i][k]),
                 border: "solid 1px black"
               }}
               onClick={() => {

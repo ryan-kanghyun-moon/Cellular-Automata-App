@@ -25,14 +25,18 @@ function Game() {
   
   const isOnRef = useRef(isOn);
   useEffect(() => {
-      var c = new ca.CA(grid, live, surv, setGrid, isOnRef);
-      c.show();
+      if (isCA) {
+        var c = new ca.CA(grid, live, surv, setGrid, isOnRef);
+        c.show();
+      } else {
+        // TODO
+      }
   }, [isOn]);
   
   return (
     <div>
       <div style={{display:"flex"}}>
-        <Board grid={grid} setGrid={setGrid} rule={currRule} isOn={isOn} oneIsColor={oneIsColor} numCols={numCols} numRows={numRows} />
+        <Board grid={grid} setGrid={setGrid} rule={currRule} isOn={isOn} oneIsColor={oneIsColor} numCols={numCols} numRows={numRows} isCA={isCA}/>
        
         <Spacer/>
 
