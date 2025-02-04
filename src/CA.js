@@ -44,7 +44,7 @@ export class CA {
             const y = k + h;
 
             if (x >= 0 && x < this.grid.length && y >= 0 && y < this.grid[0].length){
-               currCount += this.grid[x][y]; 
+               currCount += this.grid[x][y] === ENUM.CA.DEAD ? 0 : 1; 
             }
         }
 
@@ -57,7 +57,7 @@ export class CA {
             row.forEach((col, k) => {
                 var nbCount = this.countNeighbor(i, k);
                if ((this.grid[i][k] && !this.surv[nbCount]) || (!this.grid[i][k] && this.live[nbCount])) {
-                newGrid[i][k] = newGrid[i][k] === ENUM.CA.ALIVE ? ENUM.CA.DEAD : ENUM.CA.ALIVE;
+                newGrid[i][k] = newGrid[i][k] === ENUM.CA.DEAD ? ENUM.CA.ALIVE : ENUM.CA.DEAD;
                }
             })
         })
