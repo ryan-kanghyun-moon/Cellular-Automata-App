@@ -139,8 +139,6 @@ class Maze {
 		setTimeout(() => search(), 10);
 		
     }
-	
-
-
-
 }
+
+export default Maze;
