@@ -4,23 +4,23 @@ class Queue {
     #q;
     #front;
     #back;
-    #size;
+    length;
     constructor() {
         this.#q = [];
         this.#front = 0;
         this.#back = 0;
-        this.#size = 0;
+        this.length = 0;
     }
     push(obj) {
         this.#q.push(obj);
-        this.#size++;
+        this.length++;
         this.#back++;
     }
     pop() {
         if (this.isEmpty()) return undefined;
         var ret = this.#q[this.#front];
         this.#front++;
-        this.#size--;
+        this.length--;
         if (this.isEmpty()) {
             this.#front = 0;
             this.#back = 0;
@@ -28,7 +28,7 @@ class Queue {
         return ret;
     }
     isEmpty() {
-        return this.#size === 0;
+        return this.length === 0;
     }
 }
 
@@ -65,7 +65,7 @@ class Maze {
         this.#setFoundGoal = setFoundGoal;
     }
 
-    #getInBoundNeighbors(i, k) {
+    getInBoundNeighbors(i, k) {
         var nb = [];
         for (let [w, h] in neighbors ) {
             var x = i + w;
@@ -77,13 +77,14 @@ class Maze {
         return nb;
     }
 
-    #deepcopy(grid) {
+    deepcopy(grid) {
         return grid.map((a) => a.slice());
     }
 
     show() {
-        var grid = this.#deepcopy(this.#grid);
-        for (let [n_x,n_y] in this.#getInBoundNeighbors(this.#start[0], this.#start[1])) {
+        var grid = this.deepcopy(this.#grid);
+        for (let n in this.getInBoundNeighbors(this.#start[0], this.#start[1])) {
+			var [n_x,n_y] = n;
             switch(this.#grid[n_x][n_y]) {
                 case(MAZE.GOAL) :
                     this.#setFoundGoal(True);
@@ -91,46 +92,54 @@ class Maze {
                 case(MAZE.EMPTY_PATH) :
                     this.#toVisit.push([n_x,n_y]);
                     grid[n_x][n_y] = MAZE.PATH_TO_BE_SEARCHED;
+					paths[`${n}`] = [n];
             }
         }
         this.#grid = grid;
         this.#setGrid(grid);
-        setTimeout(()=>this.search(), 50);
+        setTimeout(()=>this.search(), 10);
     }
 
     search() {
 
-        // basecase, setCannotFindPath(True) and exit if toVisit is empty OR isOnRef is False
-        /*
-            if toVisit.isEmpty() :
-                setCannotFindPath(True);
-                return
-            else if isOnRef.current === False :
-                return 
-        */
-
-        /*
-        c <- toVisit.pop()
-        for neighbors n of c:
-            if n is emptyPath:
-                grid[n.x][n.y] = MAZE.TO_VISIT
-                toVisit.push(n)
-                paths[n] = paths[c].push(n)
-            if n is Goal:
-                for p in paths[c]:
-                    grid[p.x][p.y] = MAZE.ROUTE
-                endfor
-                setFoundGoal(True);
-        endfor  
-        
-        grid[c.x][c.y] = MAZE.VISITED;
-        delete paths[c]
-        setGrid(grid)
-
-        setTimeout(()=>search(), 50)
-        
-        */
+		if (this.#isOnRef.current === False) {
+			return;
+		}
+		
+		if (this.#toVisit.length === 0) {
+			this.#setCannotFindPath(True);
+			return;
+		}
+		
+		let cell = toVisit.pop();
+		var grid = deepcopy(this.#grid);
+		for (let n in this.getInBoundNeighbors(cell[0], cell[1])) {
+			let [n_x,n_y] = n;
+			let nVal = this.#grid[n_x][n_y];
+			switch(nVal) {
+				case (MAZE.EMPTY_PATH) :
+					grid[n_x][n_y] = MAZE.PATH_TO_BE_SEARCHED;
+					this.#toVisit.push(n);
+					paths[`${n}`] = [...paths[`${cell}`]].push(n);
+					break;
+				case (MAZE.GOAL) :
+					for (let [p_x, p_y] in paths[`${n}`]) {
+						grid[p_x][p_y] = MAZE.ROUTE;
+					}
+					this.#setFoundGoal(True);
+					this.#setGrid(grid);
+					return;
+			}
+		}
+		
+		grid[c[0]][c[1]] = MAZE.VISITED;
+		this.#grid = grid;
+		this.#setGrid(grid);
+		
+		setTimeout(() => search(), 10);
+		
     }
+	
 
 
 
