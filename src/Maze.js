@@ -46,7 +46,7 @@ class Maze {
     #setCannotFindPath;
     #setFoundGoal
 
-    constructor(rule, setGrid, start, goal, grid, isOnRef, setCannotFindPath, setFoundGoal) {
+    constructor(rule, setGrid, start, goal, grid, isOnRef) {
         this.#setGrid = setGrid;
         this.#grid = grid;
         this.#goal = goal;
@@ -58,16 +58,16 @@ class Maze {
             case(MAZE.DFS) :
                 this.#toVisit = [];
                 break;
+			default :
+				throw new Error("wrong rule");
         }
         this.#paths = {};
         this.#isOnRef = isOnRef;
-        this.#setCannotFindPath = setCannotFindPath;
-        this.#setFoundGoal = setFoundGoal;
     }
 
     getInBoundNeighbors(i, k) {
         var nb = [];
-        for (let [w, h] in neighbors ) {
+        for (let [w, h] in neighbors) {
             var x = i + w;
             var y = k + h;
             if (x >= 0 && x < this.#grid.length && y <= 0 && y < this.#grid[0].length) {
@@ -87,8 +87,7 @@ class Maze {
 			var [n_x,n_y] = n;
             switch(this.#grid[n_x][n_y]) {
                 case(MAZE.GOAL) :
-                    this.#setFoundGoal(True);
-                    return;
+					return MAZE.PATH_FOUND;
                 case(MAZE.EMPTY_PATH) :
                     this.#toVisit.push([n_x,n_y]);
                     grid[n_x][n_y] = MAZE.PATH_TO_BE_SEARCHED;
@@ -103,16 +102,15 @@ class Maze {
     search() {
 
 		if (this.#isOnRef.current === False) {
-			return;
+			return undefined;
 		}
 		
 		if (this.#toVisit.length === 0) {
-			this.#setCannotFindPath(True);
-			return;
+			return MAZE.WALL;
 		}
 		
-		let cell = toVisit.pop();
-		var grid = deepcopy(this.#grid);
+		let cell = this.#toVisit.pop();
+		var grid = this.deepcopy(this.#grid);
 		for (let n in this.getInBoundNeighbors(cell[0], cell[1])) {
 			let [n_x,n_y] = n;
 			let nVal = this.#grid[n_x][n_y];
@@ -120,19 +118,20 @@ class Maze {
 				case (MAZE.EMPTY_PATH) :
 					grid[n_x][n_y] = MAZE.PATH_TO_BE_SEARCHED;
 					this.#toVisit.push(n);
-					paths[`${n}`] = [...paths[`${cell}`]].push(n);
+					var pathsToN = [...paths[`${cell}`]];
+					pathsToN.push(n);
+					paths[`${n}`] = pathsToN;
 					break;
 				case (MAZE.GOAL) :
 					for (let [p_x, p_y] in paths[`${n}`]) {
-						grid[p_x][p_y] = MAZE.ROUTE;
+						grid[p_x][p_y] = MAZE.PATH_FOUND;
 					}
-					this.#setFoundGoal(True);
 					this.#setGrid(grid);
-					return;
+					return MAZE.PATH_FOUND;
 			}
 		}
 		
-		grid[c[0]][c[1]] = MAZE.VISITED;
+		grid[cell[0]][cell[1]] = MAZE.VISITED;
 		this.#grid = grid;
 		this.#setGrid(grid);
 		

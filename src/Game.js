@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import * as ca from "./CA.js";
+import Maze from "./Maze.js";
 import PlayPauseReset from "./PlayPauseReset.js";
 import Randomizer from './Randomizer.js';
 import Board from './Board.js';
@@ -18,6 +19,7 @@ function Game() {
   // universal
   var [isOn, setIsOn] = useState(false);
   var [grid, setGrid] = useState(() => Array(numRows).fill().map(() => new Array(numCols).fill(0)));
+  const isOnRef = useRef(isOn);
 
   // CA
   var [surv, setSurv] = useState([0, 0, 1, 1, 0, 0, 0, 0, 0]);
@@ -32,13 +34,33 @@ function Game() {
   var [currMazeRule, setCurrMazeRule] = useState(MAZE.DFS);
   var [start, setStart] = useState([-1, -1]);
   var [goal, setGoal] = useState([-1, -1]);
-  const isOnRef = useRef(isOn);
+  var [foundGoal, setFoundGoal] = useState(False);
+  var [cannotFindPath, setCannotFindPath] = useState(False);
+	
   useEffect(() => {
     if (isCA) {
       var c = new ca.CA(grid, live, surv, setGrid, isOnRef);
       c.show();
     } else {
       // TODO
+		if (goal[0] === -1 || start[0] === -1) {
+			alert("set start and/or goal and try again");
+		}
+		var m = new Maze(currMazeRule, setGrid, start, goal, grid, isOnRef);
+		var res = m.show();
+		switch(res) {
+			case (MAZE.PATH_FOUND) :
+				alert("found path!");
+				setIsOn(False);
+				isOnRef.current(False);
+				break;
+			case (MAZE.WALL) :
+				alert("could not find path ;(");
+				setIsOn(False);
+				isOnRef.current(False);
+				break;
+		}
+		
     }
   }, [isOn]);
 
