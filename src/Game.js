@@ -8,8 +8,8 @@ import CAPanel from './CAPanel.js';
 import CAMazeSelector from './CAMazeSelector.js';
 import MazePanel from './MazePanel.js';
 import { CA, MAZE } from './enums.js';
-const numRows = 100;
-const numCols = 100;
+const numRows = 50;
+const numCols = 50;
 
 function Spacer() {
   return <div style={{ width: 20, height: 20 }} />
@@ -34,10 +34,11 @@ function Game() {
   var [currMazeRule, setCurrMazeRule] = useState(MAZE.DFS);
   var [start, setStart] = useState([-1, -1]);
   var [goal, setGoal] = useState([-1, -1]);
-  var [foundGoal, setFoundGoal] = useState(False);
-  var [cannotFindPath, setCannotFindPath] = useState(False);
+  var [foundGoal, setFoundGoal] = useState(false);
+  var [cannotFindPath, setCannotFindPath] = useState(false);
 	
   useEffect(() => {
+	  if (!isOn) return;
     if (isCA) {
       var c = new ca.CA(grid, live, surv, setGrid, isOnRef);
       c.show();
@@ -51,13 +52,13 @@ function Game() {
 		switch(res) {
 			case (MAZE.PATH_FOUND) :
 				alert("found path!");
-				setIsOn(False);
-				isOnRef.current(False);
+				setIsOn(false);
+				isOnRef.current(false);
 				break;
 			case (MAZE.WALL) :
 				alert("could not find path ;(");
-				setIsOn(False);
-				isOnRef.current(False);
+				setIsOn(false);
+				isOnRef.current(false);
 				break;
 		}
 		
