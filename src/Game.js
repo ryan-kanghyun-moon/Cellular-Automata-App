@@ -8,8 +8,8 @@ import CAPanel from './CAPanel.js';
 import CAMazeSelector from './CAMazeSelector.js';
 import MazePanel from './MazePanel.js';
 import { CA, MAZE } from './enums.js';
-const numRows = 50;
-const numCols = 50;
+const numRows = 70;
+const numCols = 70;
 
 function Spacer() {
   return <div style={{ width: 20, height: 20 }} />
@@ -43,27 +43,31 @@ function Game() {
       var c = new ca.CA(grid, live, surv, setGrid, isOnRef);
       c.show();
     } else {
-      // TODO
 		if (goal[0] === -1 || start[0] === -1) {
 			alert("set start and/or goal and try again");
+			setIsOn(false);
+			isOnRef.current = false;
+			return;
 		}
-		var m = new Maze(currMazeRule, setGrid, start, goal, grid, isOnRef);
-		var res = m.show();
-		switch(res) {
-			case (MAZE.PATH_FOUND) :
-				alert("found path!");
-				setIsOn(false);
-				isOnRef.current(false);
-				break;
-			case (MAZE.WALL) :
-				alert("could not find path ;(");
-				setIsOn(false);
-				isOnRef.current(false);
-				break;
-		}
-		
+		var m = new Maze(currMazeRule, setGrid, start, goal, grid, isOnRef, setIsOn);
+		m.show();
     }
   }, [isOn]);
+	
+  useEffect(() => {
+	  if (isCA && !isOn && (start[0] !== -1 || goal[0] !== -1) ) {
+				var g = grid.map((a) => a.slice());
+		 if (start[0] !== -1) {
+			 	g[start[0]][start[1]] = CA.ALIVE;
+			 	setStart([-1,-1]);
+		 } 
+		  if (goal[0] !== -1) {
+			 	g[goal[0]][goal[1]] = CA.ALIVE;
+			 	setGoal([-1,-1]);
+		  }
+		  setGrid(g);
+	  }
+  }, [isCA]);
 
   return (
     <div>
@@ -86,7 +90,7 @@ function Game() {
 
           <Spacer />
 
-          <PlayPauseReset setIsOn={setIsOn} isOn={isOn} isOnRef={isOnRef} setGrid={setGrid} numRows={numRows} numCols={numCols} />
+          <PlayPauseReset setIsOn={setIsOn} isOn={isOn} isOnRef={isOnRef} setGrid={setGrid} numRows={numRows} numCols={numCols} setStart={setStart} setGoal={setGoal} isCA={isCA} />
 
           <Spacer />
 

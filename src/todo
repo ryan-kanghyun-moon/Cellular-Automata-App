@@ -1,2 +1,5 @@
 MAZE:
+	- BFS on narrow path stops prematurely
+	
     - reset on maze mode will bring back the initial board
+	- DFS should search even if a neighbor was already add to be visited

@@ -26,12 +26,13 @@ function getColor(isCA, oneIsColor, cellValue) {
       case (MAZE.START):
         return "darkgreen";
       default:
-        return "orange";
+        return "red";
     }
   }
 }
 
 function setValue(i, k, arr, props) {
+	if (props.isOn) return;
   var newArr = [...arr];
   if (props.isCA) {
     // var newArr = [...arr];
@@ -56,8 +57,11 @@ function setValue(i, k, arr, props) {
       props.setGrid(newArr);
     } else {
       // var newArr = [...arr];
-      if (arr[i][k] === MAZE.WALL) newArr[i][k] = MAZE.EMPTY_PATH;
-      if (arr[i][k] === MAZE.EMPTY_PATH) newArr[i][k] = MAZE.WALL;
+      if (arr[i][k] === MAZE.WALL) {
+			newArr[i][k] = MAZE.EMPTY_PATH;
+	  } else if (arr[i][k] === MAZE.EMPTY_PATH) {
+		  newArr[i][k] = MAZE.WALL;
+	  }
 
       props.setGrid(newArr);
 

@@ -7,8 +7,10 @@ export default function PlayPauseReset(props) {
             {!props.isOn ? "play" : "pause"}
           </button>
           
-          {!props.isOnRef.current&& <button classID="resetButton" onClick={() => {
+          {!props.isOn && <button classID="resetButton" onClick={() => {
             props.setGrid(() => Array(props.numRows).fill().map(() => new Array(props.numCols).fill(0)));
+					   props.setGoal([-1,-1]);
+					   props.setStart([-1,-1]);
             }}>
             {"reset"}
           </button>}

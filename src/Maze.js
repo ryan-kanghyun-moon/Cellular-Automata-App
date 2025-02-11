@@ -44,9 +44,10 @@ class Maze {
     #grid;
     #isOnRef;
     #setCannotFindPath;
-    #setFoundGoal
+    #setFoundGoal;
+	#setIsOn;
 
-    constructor(rule, setGrid, start, goal, grid, isOnRef) {
+    constructor(rule, setGrid, start, goal, grid, isOnRef, setIsOn) {
         this.#setGrid = setGrid;
         this.#grid = grid;
         this.#goal = goal;
@@ -63,16 +64,14 @@ class Maze {
         }
         this.#paths = {};
         this.#isOnRef = isOnRef;
+		this.#setIsOn = setIsOn;
     }
 
     getInBoundNeighbors(i, k) {
         var nb = [];
-		// console.log(neighbors);
         for (let [w, h] of neighbors) {
             const x = i + w;
             const y = k + h;
-			// console.log(x);
-			// console.log(y);
             if (x >= 0 && x < this.#grid.length && y >= 0 && y < this.#grid[0].length) {
                 nb.push([x, y]);
             }
@@ -86,21 +85,20 @@ class Maze {
 
     show() {
         var grid = this.deepcopy(this.#grid);
-		// console.log("asdf");
-		// console.log(this.#start);
-		// console.log(this.getInBoundNeighbors(this.#start[0], this.#start[1]));
         for (let n of this.getInBoundNeighbors(this.#start[0], this.#start[1])) {
 			var [n_x,n_y] = n;
-			console.log(n);
-			console.log(this.#grid[n_x][n_y]);
             switch(this.#grid[n_x][n_y]) {
                 case(MAZE.GOAL) :
-					return MAZE.PATH_FOUND;
+					this.#setIsOn(false);
+					this.#isOnRef.current = false;
+					return;
                 case(MAZE.EMPTY_PATH) :
                     this.#toVisit.push([n_x,n_y]);
                     grid[n_x][n_y] = MAZE.PATH_TO_BE_SEARCHED;
 					this.#paths[`${n}`] = [n];
-					// console.log(this.#toVisit.length);
+					break;
+				default :
+					break;
             }
 			
         }
@@ -112,15 +110,17 @@ class Maze {
     search() {
 
 		if (this.#isOnRef.current === false) {
-			return undefined;
+			return;
 		}
 		
 		if (this.#toVisit.length === 0) {
-			return MAZE.WALL;
+			alert("could not find path to goal");
+			this.#setIsOn(false);
+			this.#isOnRef.current = false;
 		}
 		
-		
 		let cell = this.#toVisit.pop();
+		if (!cell) return;
 		var grid = this.deepcopy(this.#grid);
 		for (let n of this.getInBoundNeighbors(cell[0], cell[1])) {
 			let [n_x,n_y] = n;
@@ -138,15 +138,19 @@ class Maze {
 						grid[p_x][p_y] = MAZE.PATH_FOUND;
 					}
 					this.#setGrid(grid);
-					return MAZE.PATH_FOUND;
+					this.#setIsOn(false);
+					this.#isOnRef.current = false;
+					return;
+				default :
+					break;
 			}
 		}
 		
-		grid[cell[0]][cell[1]] = MAZE.VISITED;
+		grid[cell[0]][cell[1]] = MAZE.SEARCHED;
 		this.#grid = grid;
 		this.#setGrid(grid);
 		
-		setTimeout(() => this.search(), 1);
+		setTimeout(() => this.search(), 10);
 		
     }
 }
