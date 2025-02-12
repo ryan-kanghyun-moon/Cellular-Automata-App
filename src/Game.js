@@ -34,8 +34,6 @@ function Game() {
   var [currMazeRule, setCurrMazeRule] = useState(MAZE.DFS);
   var [start, setStart] = useState([-1, -1]);
   var [goal, setGoal] = useState([-1, -1]);
-  var [foundGoal, setFoundGoal] = useState(false);
-  var [cannotFindPath, setCannotFindPath] = useState(false);
 	
   useEffect(() => {
 	  if (!isOn) return;
