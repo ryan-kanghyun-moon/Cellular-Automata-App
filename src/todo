@@ -1,7 +1,9 @@
 MAZE:
-
-	- bug/feature: DFS should search even if a neighbor was already added to be visited
 	
+	- implement A*
+
     - feature: reset on maze mode will bring back the initial board
+	
+	
 	
 	- TODO: figure out why queue optimization fails
