@@ -1,5 +1,7 @@
 MAZE:
-	- BFS on narrow path stops prematurely
+
+	- bug/feature: DFS should search even if a neighbor was already added to be visited
 	
-    - reset on maze mode will bring back the initial board
-	- DFS should search even if a neighbor was already add to be visited
+    - feature: reset on maze mode will bring back the initial board
+	
+	- TODO: figure out why queue optimization fails

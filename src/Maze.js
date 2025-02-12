@@ -21,10 +21,6 @@ class Queue {
         var ret = this.#q[this.#front];
         this.#front++;
         this.length--;
-        if (this.isEmpty()) {
-            this.#front = 0;
-            this.#back = 0;
-        }
         return ret;
     }
     isEmpty() {
@@ -108,7 +104,6 @@ class Maze {
     }
 
     search() {
-
 		if (this.#isOnRef.current === false) {
 			return;
 		}
