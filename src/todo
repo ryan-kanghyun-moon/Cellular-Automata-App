@@ -1,31 +1,9 @@
-App: 
-    - Game
-        - CAMazeSelector
-        - Board
-        - CAMazePanel
-            - CAPanel
-                - CARuleDropDown
-                - AliveCondSelector
-                - SurvCondSelector
-            - MazePanel
-            - PlayPauseButton 
-            - StopButton
-States:
-    - grid - Game
-    - start / pause - Game
-    - stopped 
-    - alive rule
-    - surv rule
-    - ca / maze
-    - randLevel
+MAZE:
+	
+	- implement A*
 
-Todo:
-    - add corresponding states to components
-    - implement!
-
-CA:
-    - 
-
-Architecture:
-    - Game <- Grid, Panel, Rand
-
+    - feature: reset on maze mode will bring back the initial board
+	
+	
+	
+	- TODO: figure out why queue optimization fails
