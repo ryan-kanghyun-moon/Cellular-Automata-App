@@ -20,13 +20,13 @@ function Game() {
   var [isOn, setIsOn] = useState(false);
   var [grid, setGrid] = useState(() => Array(numRows).fill().map(() => new Array(numCols).fill(0)));
   const isOnRef = useRef(isOn);
+  var [isCA, setIsCA] = useState(true);
+  var [randLevel, setRandLevel] = useState(0.05);
 
   // CA
   var [surv, setSurv] = useState([0, 0, 1, 1, 0, 0, 0, 0, 0]);
   var [live, setLive] = useState([0, 0, 0, 1, 0, 0, 0, 0, 0]);
   var [currRule, setCurrRule] = useState('game of life');
-  var [isCA, setIsCA] = useState(false);
-  var [randLevel, setRandLevel] = useState(0.05);
 
   // MAZE
   var [isSelectingStart, setIsSelectingStart] = useState(false);
