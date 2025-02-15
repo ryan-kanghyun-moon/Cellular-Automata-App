@@ -1,5 +1,5 @@
 MAZE:
-	
+	- README!!!!!
 	- implement A*
 
     - feature: reset on maze mode will bring back the initial board
