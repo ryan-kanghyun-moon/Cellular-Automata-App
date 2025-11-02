@@ -37,5 +37,5 @@ Depth First Search
 https://github.com/user-attachments/assets/240ae007-aba5-4923-8bea-319627649654
 
 ## What I Learned
-* Arrays work very differently with js then other languages, and debugging was tricky because of this. I understand arrays are treated as objects now, so deepcopying should also be handled delicately.
+* Arrays work very differently with js than other languages, and debugging was tricky because of this. I understand arrays are treated as objects now, so deepcopying should also be handled delicately.
 * Planning file structures and decoupling components and styling makes development a lot more efficient. Not only should I picture how my app would look like but also the structure of the code should be well thought-out.
